@@ -1,0 +1,29 @@
+version: "3.8"
+   
+services:
+  db:
+    image: mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql/data
+    environment:
+      - MARIADB_ROOT_PASSWORD=secret
+      - MARIADB_DATABASE=project
+      - MARIADB_USER=dev
+      - MARIADB_PASSWORD=Azerty77
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    environment:
+      - MARIADB_DATABASE=project
+      - MARIADB_USER=dev
+      - MARIADB_PASSWORD=Azerty77
+      - MARIADB_HOST=db
+      - MARADB_PORT=3306
+    ports:
+      - "8000:8000"
+
+volumes:
+  mariadb_data:
+  
